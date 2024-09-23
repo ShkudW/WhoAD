@@ -8,7 +8,7 @@ from rich.progress import Progress
 from rich.text import Text
 import matplotlib.pyplot as plt
 
-# Banner
+
 BANNER_TEXT = r"""
 __        ___             _    ____  
 \ \      / / |__   ___   / \  |  _ \ 
@@ -22,7 +22,7 @@ https://github.com/ShkudW/WhoAD
 
 console = Console()
 
-# Function to generate random colorized banner
+
 def print_colored_banner():
     banner_lines = BANNER_TEXT.split('\n')
     banner_text = Text()
@@ -31,7 +31,7 @@ def print_colored_banner():
         banner_text.append(line + "\n", style=color)
     console.print(banner_text)
 
-# AD connection
+
 def connect_to_ad(domain_controller, domain, username, password=None, hash_value=None):
     server = Server(domain_controller, get_info=ALL)
     
@@ -48,7 +48,7 @@ def connect_to_ad(domain_controller, domain, username, password=None, hash_value
     
     return conn
 
-# Functions for AD enumeration
+
 def find_no_preauth_users(conn, base_dn):
     search_filter = '(userAccountControl:1.2.840.113556.1.4.803:=4194304)'
     conn.search(base_dn, search_filter, attributes=['cn', 'userAccountControl'])
@@ -74,13 +74,13 @@ def find_full_control_users(conn, base_dn):
     conn.search(base_dn, search_filter, attributes=['cn', 'ntSecurityDescriptor'])
     return conn.entries
 
-# Finding users running services in the domain (SPN)
+
 def find_service_users(conn, base_dn):
     search_filter = '(servicePrincipalName=*)'
     conn.search(base_dn, search_filter, attributes=['cn', 'servicePrincipalName'])
     return conn.entries
 
-# Save the report and display a final message
+
 def save_report(df, filename):
     df.to_excel(filename, index=False)
     console.print(f"[bold green]Report saved to {filename}[/bold green]")
@@ -95,7 +95,7 @@ def generate_graphical_report(df, filename):
     plt.savefig(f"{filename}_graph.png")
     console.print(f"[bold green]Graph saved as {filename}_graph.png[/bold green]")
 
-# Parser creation with userfile support
+
 def create_parser(userfile_mode=False):
     parser = argparse.ArgumentParser(
         description="AD Permissions Explorer",
